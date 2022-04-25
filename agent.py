@@ -169,8 +169,8 @@ class D3Agent(DeepAgent):
             self.Q_next.load_state_dict(self.Q_eval.state_dict())
 
     def calculate_loss(self, states, actions, rewards, new_states, dones, indices):
-        # Duelling Double Deep Q-Learning. Using the state value and action advantage
-        # instead of a single state-action value shows the presence of duelling Q-learning.
+        # Dueling Double Deep Q-Learning. Using the state value and action advantage
+        # instead of a single state-action value shows the presence of dueling Q-learning.
         # the two networks, one used for calculating the best action,
         # and the second one used for getting the value of that action to avoid overestimation
         # shows the presence of double Q-learning

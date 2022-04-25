@@ -1,5 +1,4 @@
 import torch.nn as nn
-import os
 import torch.optim as optim
 import torch.nn.functional as F
 import torch as T
@@ -68,7 +67,6 @@ class D2QN(nn.Module):
         :param fc2_dims: number of neurons in the first middle layer
         :param n_actions: number of actions (shape of output layer)
         """
-
         super(D2QN, self).__init__()
         self.state_dims = state_dims
         self.n_actions = n_actions
