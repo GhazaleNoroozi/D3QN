@@ -3,8 +3,15 @@ import numpy as np
 
 class Memory:
     def __init__(self, size, state_shape):
+        """
+        Initializing the parameters and arrays
+        :param size: size of the memory
+        :param state_shape: state shape
+        """
         self.counter = 0
         self.size = size
+
+        # The replay buffer
         self.state_shape = state_shape
         self.states = np.zeros((self.size, *self.state_shape), dtype=np.float32)
         self.new_states = np.zeros((self.size, *self.state_shape), dtype=np.float32)
@@ -31,10 +38,15 @@ class Memory:
         self.counter += 1
 
     def sample_buffer(self, batch_size):
+        """
+        Randomly samples a batch from replay buffer (the memory)
+        :param batch_size: size of the batch
+        :return: a batch of samples
+        """
         max_mem = min(self.counter, self.size)
         batch = np.random.choice(max_mem, batch_size, replace=False)
         batch_index = np.arange(batch_size, dtype=np.int32)
-        # a batch observation? DUNNO what batch is (just a random observation)
+
         state_batch = self.states[batch]
         new_state_batch = self.new_states[batch]
         reward_batch = self.rewards[batch]
