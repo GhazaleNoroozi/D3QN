@@ -5,19 +5,10 @@ import torch as T
 
 
 class D3QN(nn.Module):
-    def __init__(self, lr, state_dims, n_actions, V_dims=1, fc1_dims=512):
-        """
-        Initializing the state value actions.
-        :param lr: learning rate
-        :param state_dims: state shape
-        :param n_actions: number of actions (the shape of the advantage stream output layer)
-        :param V_dims: we have one state so defaulted to one (the shape of the state value stream output layer)
-        :param fc1_dims: the number of neurons in the only middle layer
-        """
+
+    def __init__(self, lr, state_dims, checkpoint_file, n_actions, V_dims=1, fc1_dims=512):
         super(D3QN, self).__init__()
-        # self.checkpoint_dir = checkpoint_dir
-        # self.checkpoint_file = os.path.join(self.checkpoint_dir, name)
-        # self.checkpoint_file = checkpoint_file
+        self.checkpoint_file = checkpoint_file
         self.state_dims = state_dims
         self.n_actions = n_actions
         self.fc1_dims = fc1_dims
@@ -26,10 +17,11 @@ class D3QN(nn.Module):
         # layer to handle the input of observation
         self.fc1 = nn.Linear(*self.state_dims, self.fc1_dims)
 
-        # for dueling we need a value stream and an advantage stream
+        # for dueling we need a value and advantage stream
         # value network tells agent what is the value of its current state
         # the advantage tells the relative advantage of each action in the state
-        self.V = nn.Linear(self.fc1_dims, self.V_dims)
+        # each focus on different parts of the picture
+        self.V = nn.Linear(self.fc1_dims, self.V_dims)   # 1 because our states are 1 dimension
         self.A = nn.Linear(self.fc1_dims, n_actions)
 
         self.optimizer = optim.Adam(self.parameters(), lr=lr)
@@ -47,14 +39,6 @@ class D3QN(nn.Module):
         x_V = self.V(x)
         x_A = self.A(x)
         return x_V, x_A
-
-    # def save_checkpoint(self):
-    #     print('--- saving a checkpoint ---')
-    #     T.save(self.state_dict(), self.checkpoint_file)
-    #
-    # def load_checkpoint(self):
-    #     print('--- loading a checkpoint ---')
-    #     self.load_state_dict(T.load(self.checkpoint_file))
 
 
 class D2QN(nn.Module):
@@ -109,7 +93,7 @@ class DQN(nn.Module):
         self.state_dims = state_dims
         self.n_actions = n_actions
 
-        self.fc1 = nn.Linear(*self.input_dims, self.fc1_dims)
+        self.fc1 = nn.Linear(*self.state_dims, self.fc1_dims)
         self.fc2 = nn.Linear(self.fc1_dims, self.fc2_dims)
         self.fc3 = nn.Linear(self.fc2_dims, self.n_actions)
 

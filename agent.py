@@ -34,7 +34,7 @@ class DeepAgent:
         self.batch_size = batch_size
         self.memory = Memory(self.mem_size, self.state_dims)
         # the first network
-        self.Q_eval = DQN(self.lr, n_actions=self.n_actions, input_dims=self.state_dims, fc1_dims=256, fc2_dims=256)
+        self.Q_eval = DQN(self.lr, n_actions=self.n_actions, state_dims=self.state_dims, fc1_dims=256, fc2_dims=256)
         self.learn_step_counter = 0
 
     def choose_action(self, state):

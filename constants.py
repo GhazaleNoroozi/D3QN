@@ -12,7 +12,7 @@ file_name3 = 'LunarLander3'
 
 AGENT = agent1
 # FILENAME = file_name1
-FILENAME = 'gamma_dqn'
+FILENAME = 'lr_dqn'
 EPISODES = 500
 IS_RENDER = False
 
